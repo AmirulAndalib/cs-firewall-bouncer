@@ -49,6 +49,10 @@ func (ctx *ipTablesContext) collectMetricsIptables(scanner *bufio.Scanner) (map[
 	for scanner.Scan() {
 		line := scanner.Text()
 
+		if line == "" {
+			continue
+		}
+
 		// Ignore chain declaration
 		if line[0] == ':' {
 			continue
@@ -101,7 +105,7 @@ func (ctx *ipTablesContext) collectMetricsIptables(scanner *bufio.Scanner) (map[
 				continue
 			}
 
-			if len(ctx.originSetMapping) < originID {
+			if len(ctx.originSetMapping) <= originID {
 				log.Errorf("Found unknown origin id : %d", originID)
 				continue
 			}
@@ -154,6 +158,10 @@ func (ctx *ipTablesContext) collectMetricsIpset(scanner *bufio.Scanner) (map[str
 
 	for scanner.Scan() {
 		line := scanner.Text()
+
+		if line == "" {
+			continue
+		}
 
 		// Chain declaration
 		if line[0] == ':' {
